@@ -26,6 +26,7 @@ Your output will look something like below:
 
 ![Challenge 1 output](./images/challenge-1.png)
 
+
 _Note: the screenshot above is not the complete output._
 
 If your query is correct, the total rows in your output should be the same as the total number of records in Table `titleauthor`.
