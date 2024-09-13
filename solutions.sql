@@ -30,12 +30,12 @@ SELECT
 authors.au_id AS "AUTHOR ID", 
 authors.au_lname AS "LAST NAME", 
 authors.au_fname AS "FIRST NAME", 
-COUNT(sales.qty) AS "TOTAL" 
+SUM(sales.qty) AS "TOTAL" 
 FROM authors
 JOIN titleauthor ON authors.au_id = titleauthor.au_id
 JOIN sales ON sales.title_id = titleauthor.title_id
 GROUP BY authors.au_id
-ORDER BY COUNT() DESC
+ORDER BY SUM(sales.qty) DESC
 LIMIT 3;
 
 -- Challenge 4
@@ -43,9 +43,9 @@ SELECT
 authors.au_id AS "AUTHOR ID", 
 authors.au_lname AS "LAST NAME", 
 authors.au_fname AS "FIRST NAME", 
-COUNT(sales.qty) AS "TOTAL" 
+IFNULL(SUM(sales.qty), 0) AS "TOTAL"
 FROM authors
 LEFT JOIN titleauthor ON authors.au_id = titleauthor.au_id
 LEFT JOIN sales ON sales.title_id = titleauthor.title_id
 GROUP BY authors.au_id
-ORDER BY COUNT() DESC;
+ORDER BY SUM(sales.qty) DESC;
