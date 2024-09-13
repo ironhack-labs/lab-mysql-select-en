@@ -1,0 +1,2 @@
+-- Query 1 solution
+-- Query 2 solution
