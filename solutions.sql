@@ -7,10 +7,9 @@ titles.title AS "TITLE", publishers.pub_name AS "PUBLISHER"
 
 FROM authors, titles, publishers, titleauthor
 
-WHERE 
-JOIN titleauthor ON authors.au_id = titleauthor.au_id
-JOIN titles ON titleauthor.title_id = titles.title_id
-JOIN publishers ON titles.pub_id = publishers.pub_id
+WHERE authors.au_id == titleauthor.au_id AND
+titleauthor.title_id == titles.title_id AND
+titles.pub_id == publishers.pub_id
 
 
 
@@ -21,10 +20,9 @@ SELECT authors.au_id AS "AUTHOR ID", authors.au_lname AS "LAST NAME", authors.au
 
 FROM authors, titles, publishers, titleauthor
 
-WHERE 
-JOIN titleauthor ON authors.au_id = titleauthor.au_id
-JOIN titles ON titleauthor.title_id = titles.title_id
-JOIN publishers ON titles.pub_id = publishers.pub_id
+WHERE authors.au_id == titleauthor.au_id AND
+titleauthor.title_id == titles.title_id AND
+titles.pub_id == publishers.pub_id
 
 GROUP BY authors.au_id, publishers.pub_id
 ORDER BY authors.au_fname ASC
@@ -38,11 +36,9 @@ SELECT authors.au_id AS "AUTHOR ID", authors.au_lname AS "LAST NAME", authors.au
 
 FROM authors, titles, sales, titleauthor
 
-WHERE 
-JOIN titleauthor ON authors.au_id = titleauthor.au_id
-JOIN titles ON titleauthor.title_id = titles.title_id
-JOIN sales ON titles.title_id = sales.title_id
-
+WHERE authors.au_id == titleauthor.au_id AND
+titleauthor.title_id == titles.title_id AND
+titles.title_id == sales.title_id
 GROUP BY authors.au_id
 ORDER BY "TOTAL" DESC
 LIMIT 3
