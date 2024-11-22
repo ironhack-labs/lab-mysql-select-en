@@ -58,9 +58,9 @@ SELECT
 
 FROM authors
 
-INNER JOIN titleauthor ON authors.au_id = titleauthor.au_id
-INNER JOIN titles ON titleauthor.title_id = titles.title_id
-INNER JOIN sales ON titles.title_id = sales.title_id
+LEFT JOIN titleauthor ON authors.au_id = titleauthor.au_id
+LEFT JOIN titles ON titleauthor.title_id = titles.title_id
+LEFT JOIN sales ON titles.title_id = sales.title_id
 
 GROUP BY authors.au_lname
 ORDER BY SUM(sales.qty) DESC;
