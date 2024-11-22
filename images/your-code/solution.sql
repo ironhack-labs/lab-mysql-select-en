@@ -58,3 +58,20 @@ ORDER BY
 
 
 -- Q4
+SELECT 
+    authors.au_id AS "Author_ID",
+    authors.au_lname AS "Last_name",
+    authors.au_fname AS "First_name",
+    publishers.pub_name AS "Publisher",
+    COALESCE(SUM(sales.qty), 0) AS "Total_sales"
+FROM 
+    authors
+    INNER JOIN titleauthor ON authors.au_id = titleauthor.au_id
+    INNER JOIN titles ON titleauthor.title_id = titles.title_id
+    INNER JOIN publishers ON titles.pub_id = publishers.pub_id
+    INNER JOIN sales ON titles.title_id = sales.title_id
+
+GROUP BY 
+    authors.au_id, authors.au_lname, authors.au_fname, publishers.pub_name
+ORDER BY 
+    "Total_sales" DESC;
