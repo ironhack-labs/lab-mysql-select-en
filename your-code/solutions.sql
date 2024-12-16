@@ -40,7 +40,7 @@ ORDER BY
 
 SELECT 
 	a.au_id AS 'AUTHOR ID',a.au_lname AS 'LAST NAME', a.au_fname AS 'FIRST NAME',
-    COUNT(s.title_id) AS TOTAL
+    SUM(s.qty) AS TOTAL
 FROM 
 	publications.sales s INNER JOIN publications.titleauthor t_a ON s.title_id = t_a.title_id
 		INNER JOIN publications.authors a ON a.au_id = t_a.au_id
@@ -57,7 +57,7 @@ LIMIT 3;
 */
 SELECT 
 	a.au_id AS 'AUTHOR ID',a.au_lname AS 'LAST NAME', a.au_fname AS 'FIRST NAME',
-    COUNT(s.title_id) AS TOTAL
+    IFNULL(SUM(s.qty),0) AS TOTAL
 FROM 
 	publications.sales s INNER JOIN publications.titleauthor t_a ON s.title_id = t_a.title_id
 		RIGHT JOIN publications.authors a ON a.au_id = t_a.au_id
