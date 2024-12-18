@@ -129,34 +129,37 @@ FROM (
 
 
 -- Challenge 3: Best Selling Authors
--- Objective: Find the top 3 authors who have sold the highest number of titles.
+-- Objective: Identify the top 3 authors who have sold the highest number of titles.
 
 -- Required Columns:
--- 1. AUTHOR ID - Author's ID
--- 2. LAST NAME - Author's last name
--- 3. FIRST NAME - Author's first name
--- 4. TOTAL - Total number of titles sold
+-- 1. AUTHOR ID - Author's ID (from authors table)
+-- 2. LAST NAME - Author's last name (from authors table)
+-- 3. FIRST NAME - Author's first name (from authors table)
+-- 4. TOTAL - Total number of titles sold by the author.
 
 SELECT 
-    authors.au_id AS `AUTHOR ID`,               -- Author's ID
-    authors.au_lname AS `LAST NAME`,            -- Author's Last Name
-    authors.au_fname AS `FIRST NAME`,           -- Author's First Name
-    SUM(sales.qty) AS `TOTAL`                   -- Sum of quantity sold
+    authors.au_id AS `AUTHOR ID`,        -- Author ID (unique identifier for each author)
+    authors.au_lname AS `LAST NAME`,     -- Author's Last Name
+    authors.au_fname AS `FIRST NAME`,    -- Author's First Name
+    SUM(sales.qty) AS `TOTAL`            -- Total number of titles sold (sum of quantities from sales table)
 FROM 
-    authors                                     -- Start with authors table
+    authors                              -- Start with the authors table to retrieve author details
 JOIN 
-    titleauthor ON authors.au_id = titleauthor.au_id -- Link authors to titles
+    titleauthor                          -- Join titleauthor to connect authors with titles
+    ON authors.au_id = titleauthor.au_id -- Match author IDs between authors and titleauthor tables
 JOIN 
-    titles ON titleauthor.title_id = titles.title_id -- Link titles to sales
+    titles                               -- Join titles to retrieve title details
+    ON titleauthor.title_id = titles.title_id -- Match title IDs between titleauthor and titles tables
 JOIN 
-    sales ON titles.title_id = sales.title_id   -- Link sales to titles
+    sales                                -- Join sales to retrieve quantity sold for each title
+    ON titles.title_id = sales.title_id  -- Match title IDs between titles and sales tables
 GROUP BY 
-    authors.au_id,                              -- Group by Author ID
-    authors.au_lname,                           -- Group by Author Last Name
-    authors.au_fname                            -- Group by Author First Name
+    authors.au_id,                       -- Group by Author ID to calculate total sales for each author
+    authors.au_lname,                    -- Group by Author Last Name for clarity
+    authors.au_fname                     -- Group by Author First Name for clarity
 ORDER BY 
-    `TOTAL` DESC                                -- Sort in descending order of total titles sold
-LIMIT 3;                                        -- Display only the top 3 authors
+    `TOTAL` DESC                         -- Sort authors in descending order based on total sales
+LIMIT 3;                                 -- Limit the output to the top 3 authors with the highest sales
 
 
 -- Challenge 4: Best Selling Authors Ranking
@@ -175,16 +178,19 @@ SELECT
     authors.au_fname AS `FIRST NAME`,            -- Author's First Name
     IFNULL(SUM(sales.qty), 0) AS `TOTAL`         -- Sum of titles sold; use 0 if NULL
 FROM 
-    authors                                      -- Start with authors table
+    authors                                      -- Start with the authors table to include all authors
 LEFT JOIN 
-    titleauthor ON authors.au_id = titleauthor.au_id -- Link authors to titles
+    titleauthor                                  -- This table links authors to the titles they wrote
+    ON authors.au_id = titleauthor.au_id         -- Match authors with titles using the author ID
 LEFT JOIN 
-    titles ON titleauthor.title_id = titles.title_id -- Link titles to sales
+    titles                                       -- This table contains details about the titles (books)
+    ON titleauthor.title_id = titles.title_id    -- Match titles in the titleauthor table with the titles table using title ID
 LEFT JOIN 
-    sales ON titles.title_id = sales.title_id    -- Link sales to titles
+    sales                                        -- This table contains sales data, such as quantity sold
+    ON titles.title_id = sales.title_id          -- Match titles in the titles table with sales data using title ID
 GROUP BY 
     authors.au_id,                               -- Group by Author ID
     authors.au_lname,                            -- Group by Last Name
     authors.au_fname                             -- Group by First Name
 ORDER BY 
-    `TOTAL` DESC;                                -- Sort by total sold in descending order
+    `TOTAL` DESC;                                -- Sort all authors in descending order by total number of titles sold
