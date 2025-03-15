@@ -21,19 +21,21 @@ ORDER BY a.au_id DESC;
 
 -- CHALLENGE 3
 -- Top 3 authors who have sold the highest number of titles
-SELECT a.au_id, a.au_lname, a.au_fname, COUNT(t.title) AS total
+SELECT a.au_id, a.au_lname, a.au_fname, SUM(s.qty) AS total
 FROM authors a
 JOIN titleauthor ta ON a.au_id = ta.au_id
 JOIN titles t ON ta.title_id = t.title_id
+JOIN sales s ON t.title_id = s.title_id
 GROUP BY a.au_id
 ORDER BY total DESC
 LIMIT 3;
 
 -- CHALLENGE 4
 -- Modify your solution in Challenge 3 so that the output will display all 23 authors instead of the top 3.
-SELECT a.au_id, a.au_lname, a.au_fname, COUNT(t.title) AS total
+SELECT a.au_id, a.au_lname, a.au_fname, IFNULL(SUM(QTY), 0) AS total
 FROM authors a
 LEFT JOIN titleauthor ta ON a.au_id = ta.au_id
 LEFT JOIN titles t ON ta.title_id = t.title_id
+LEFT JOIN sales s ON t.title_id = s.title_id
 GROUP BY a.au_id
 ORDER BY total DESC;
